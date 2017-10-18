@@ -26,18 +26,19 @@ func abort(err error) {
 }
 
 func (_ _config) New() app.Configuration {
-	var assets string
-
 	conf, err := app.ParseConfig()
 	abort(err)
 
-	assets, err = filepath.Abs(
-		path.Join(path.Dir(os.Getenv(app.CONFIG_ENV)), "..", "assets"),
-	)
-	abort(err)
-
-	_, err = os.Stat(assets)
-	abort(err)
+	// check if prod or dev env
+	assets := path.Join("var", "lib", "rulzurlibrary")
+	if _, err = os.Stat(assets); err != nil {
+		assets, err = filepath.Abs(
+			path.Join(path.Dir(os.Getenv(app.CONFIG_ENV)), "..", "assets"),
+		)
+		abort(err)
+		_, err = os.Stat(assets)
+		abort(err)
+	}
 
 	conf.Paths.Templates = path.Join(assets, "tplt")
 	conf.Paths.Static = path.Join(assets, "static")
