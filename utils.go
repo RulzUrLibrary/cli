@@ -40,7 +40,7 @@ func (_ _config) New() app.Configuration {
 		abort(err)
 	}
 
-	conf.Paths.Templates = path.Join(assets, "tplt")
+	conf.View.Templates = path.Join(assets, "tplt")
 	conf.Paths.Static = path.Join(assets, "static")
 	conf.Paths.Thumbs = path.Join(assets, "thumbs")
 	return conf

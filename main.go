@@ -7,6 +7,7 @@ import (
 	"github.com/rulzurlibrary/api/ext/auth"
 	"github.com/rulzurlibrary/api/ext/db"
 	"github.com/rulzurlibrary/api/ext/scrapper"
+	"github.com/rulzurlibrary/api/ext/smtp"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -16,6 +17,7 @@ type Context struct {
 	Database      *db.DB
 	Auth          *auth.Auth
 	Scrapper      *scrapper.Scrapper
+	Smtp          *smtp.Smtp
 	Configuration app.Configuration
 }
 
@@ -39,6 +41,7 @@ var (
 			ctx.Database = db.New(ctx.Logger, ctx.Configuration.Database)
 			ctx.Auth = auth.New(ctx.Logger, ctx.Database)
 			ctx.Scrapper = scrapper.New(ctx.Logger, ctx.Configuration.Paths.Thumbs)
+			ctx.Smtp = smtp.New(ctx.Logger, ctx.Configuration.Smtp)
 		},
 	}
 )
