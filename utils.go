@@ -47,12 +47,13 @@ func (_ _config) New() app.Configuration {
 }
 
 func (_ _logger) New(prefix string, level log.Lvl) *log.Logger {
-	logger := log.New("rulzctl")
+	logger := log.New(prefix)
 	logger.SetLevel(level)
 	return logger
 }
 
-func progress(msg string, wait int, fn func(*time.Ticker)) {
+func progress(msg string, wait int, fn func(*time.Ticker) error) error {
+	defer fmt.Print("\n")
 	ticker := time.NewTicker(time.Second * time.Duration(wait))
 	fmt.Print(msg)
 	go func() {
@@ -60,6 +61,5 @@ func progress(msg string, wait int, fn func(*time.Ticker)) {
 			fmt.Print(".")
 		}
 	}()
-	fn(ticker)
-	fmt.Print("\n")
+	return fn(ticker)
 }
